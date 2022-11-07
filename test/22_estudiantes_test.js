@@ -1,29 +1,35 @@
 const { expect } = require("chai");
+let contractFactory;
+let contractInstance;
 
 
 describe("Testing on Students Contract", function () {
 
-  it("Should return student searched", async function () { 
-    const estudiantes = await ethers.getContractFactory("Estudiantes");
-    const estudiantesContract = await estudiantes.deploy();
-    await estudiantesContract.setEstudiante("Marta",9,7,8)
-    await estudiantesContract.setEstudiante("Ruben",10,9,8)
-    const name1 = ({...await estudiantesContract.getEstudiante(1)}[1])
-    const name2 = ({...await estudiantesContract.getEstudiante(2)}[1])
-    expect(name1).to.equal("Marta")
-    expect(name2).to.equal("Ruben")
+  describe("Deploy", function () {
+    it("Should deploy the smart contract", async function () {
+      contractFactory = await ethers.getContractFactory("Estudiantes");
+      contractInstance = await contractFactory.deploy();
+      await contractInstance.deployed();
+    })
   })
-  
 
-  it("Should return math OK", async function () { 
-    const estudiantes = await ethers.getContractFactory("Estudiantes");
-    const estudiantesContract = await estudiantes.deploy();
-    await estudiantesContract.setEstudiante("Martin",9,7,8)
-    await estudiantesContract.setEstudiante("Roberto", 10,9,2)
-    await estudiantesContract.setEstudiante("Laura", 8,5,10)
-    expect(await estudiantesContract.getNotaMatematica(1)).to.equal("9")
-    expect(await estudiantesContract.getNotaMatematica(2)).to.equal("10")
-    expect(await estudiantesContract.getNotaMatematica(3)).to.equal("8")
+
+  describe("Testing student contract functions", function () {
+
+    it("Should add & then return student searched", async function () {
+
+      await contractInstance.setEstudiante("Marta", 9, 7, 8)
+      await contractInstance.setEstudiante("Ruben", 10, 9, 8)
+      const name1 = ({ ...await contractInstance.getEstudiante(1) }[1])
+      const name2 = ({ ...await contractInstance.getEstudiante(2) }[1])
+      expect(name1).to.equal("Marta")
+      expect(name2).to.equal("Ruben")
+    })
+
+
+    it("Should return math OK", async function () {
+      expect(await contractInstance.getNotaMatematica(1)).to.equal("9")
+      expect(await contractInstance.getNotaMatematica(2)).to.equal("10")
+    })
   })
-   
 }); 
