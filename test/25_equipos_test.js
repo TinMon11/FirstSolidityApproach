@@ -4,14 +4,14 @@ const { expect } = require("chai");
 describe("Testing on Teams Contract", function () {
 
     it("Should add/get a player OK", async function () {
-        const teams = await ethers.getContractFactory("Teams");
-        const teamsContract = await teams.deploy();
+        const ContractFactory = await ethers.getContractFactory("Teams");
+        const ContractInstance = await ContractFactory.deploy();
         const [owner, addr1, addr2] = await ethers.getSigners();
 
-        await teamsContract.setPlayers(addr1.address);
-        await teamsContract.setPlayers(addr2.address);
-        expect(await teamsContract.getPlayer(0)).to.equal(addr1.address)
-        expect(await teamsContract.getPlayer(1)).to.equal(addr2.address)
+        await ContractInstance.setPlayers(addr1.address);
+        await ContractInstance.setPlayers(addr2.address);
+        expect(await ContractInstance.getPlayer(0)).to.equal(addr1.address)
+        expect(await ContractInstance.getPlayer(1)).to.equal(addr2.address)
     })
 
 }); 

@@ -4,11 +4,11 @@ describe('Testing on Owner Contract', () => {
 
     it("Should return the owner of the contract", async function () {
 
-        const Ownership = await ethers.getContractFactory("Ownership");
-        const ownerContract = await Ownership.deploy();
+        const contractFactory = await ethers.getContractFactory("Ownership");
+        const ContractInstance = await contractFactory.deploy();
 
         const [owner] = await ethers.getSigners();
 
-        expect(await ownerContract.getOwner()).to.equal(owner.address)
+        expect(await ContractInstance.getOwner()).to.equal(owner.address)
     })
  })
